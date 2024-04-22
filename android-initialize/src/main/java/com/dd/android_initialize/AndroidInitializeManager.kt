@@ -58,7 +58,7 @@ class AndroidInitializeManager private constructor(private val context: Context,
         Logger.instance.d(TAG, "initialize:" + initialize::class.java.simpleName)
         val runnable = TaskRunnable(context, initialize)
         if (initialize.isMainThread()) {
-            ExecutorManager.instance.mainExecutor.execute(runnable)
+            runnable.run()
         } else {
             ExecutorManager.instance.ioExecutor.execute(runnable)
         }
