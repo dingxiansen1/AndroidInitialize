@@ -28,6 +28,9 @@ internal class TaskRunnable(
                 it.toNotify()
             }
         }
+        if (initialize.needMainThreadWait()){
+            AndroidInitializeCache.instance.notify()
+        }
     }
 
 }

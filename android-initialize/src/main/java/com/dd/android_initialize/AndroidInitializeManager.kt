@@ -11,7 +11,7 @@ import com.dd.android_initialize.utils.SortUtils
 class AndroidInitializeManager private constructor(private val context: Context, builder: Builder) {
 
     private var mStartupList = mutableListOf<AndroidInitialize<*>>()
-    val initialized: HashMap<Class<*>, Any> = HashMap()
+    private val initialized: HashMap<Class<*>, Any> = HashMap()
 
     init {
         Logger.instance.init(builder.mTag)
@@ -23,19 +23,20 @@ class AndroidInitializeManager private constructor(private val context: Context,
     private val mLock = Any()
 
     fun start() {
+        val startTime = System.currentTimeMillis()
         Trace.beginSection(AndroidInitializeManager::class.java.simpleName)
         mStartupList = SortUtils.sort(mStartupList).toMutableList()
         AndroidInitializeCache.instance.checkAndOrganize(mStartupList)
-        val startTime = System.currentTimeMillis()
         mStartupList.forEach {
             initialize(it)
         }
+        AndroidInitializeCache.instance.mainThreadWait()
+        Trace.endSection()
         val endTime = System.currentTimeMillis()
         Logger.instance.d(
             AndroidInitializeManager::class.java.simpleName,
             "开始时间:$startTime" + ",结束时间:$endTime" + ",总耗时:${endTime - startTime}ms"
         )
-        Trace.endSection()
     }
 
     private fun initialize(initialize: AndroidInitialize<*>) {
@@ -78,7 +79,7 @@ class AndroidInitializeManager private constructor(private val context: Context,
 
     class Builder {
         internal var mStartupList = mutableListOf<AndroidInitialize<*>>()
-
+        internal var mWaitSize = 0
         internal var mTag: String = ""
 
         fun addStartup(startup: AndroidInitialize<*>) = apply {
@@ -97,6 +98,7 @@ class AndroidInitializeManager private constructor(private val context: Context,
 
 
         fun build(context: Context): AndroidInitializeManager {
+
             return AndroidInitializeManager(context, this)
         }
     }

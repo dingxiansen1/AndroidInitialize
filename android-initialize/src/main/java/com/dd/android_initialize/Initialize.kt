@@ -28,4 +28,9 @@ interface Initialize<T> {
      * 在依赖项启动完成时通知启动。
      */
     fun toNotify()
+
+    /**
+     * 需要执行完才结束的任务
+     * */
+    fun needMainThreadWait() = isMainThread()
 }

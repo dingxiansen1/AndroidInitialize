@@ -1,5 +1,7 @@
 package com.dd.android_initialize
 
+import java.util.concurrent.CountDownLatch
+
 class AndroidInitializeCache private constructor() {
 
     companion object {
@@ -12,8 +14,14 @@ class AndroidInitializeCache private constructor() {
 
     private val notifyInitialized: HashMap<Class<*>, List<AndroidInitialize<*>>> = HashMap()
 
+    private lateinit var  mWaitCountDown :CountDownLatch
+
     fun checkAndOrganize(list: List<AndroidInitialize<*>>) {
+        var size = 0
         list.forEach {
+            if (it.needMainThreadWait()){
+                size++
+            }
             if (it.dependencies().isEmpty()) {
                 return@forEach
             }
@@ -25,9 +33,18 @@ class AndroidInitializeCache private constructor() {
                 notifyInitialized[kClass] = notifyList
             }
         }
+        mWaitCountDown = CountDownLatch(size)
     }
 
     fun getDependencies(kClass: Class<*>): List<AndroidInitialize<*>>? {
         return notifyInitialized[kClass]
+    }
+
+    fun mainThreadWait(){
+        mWaitCountDown.await()
+    }
+
+    fun notify(){
+        mWaitCountDown.countDown()
     }
 }
