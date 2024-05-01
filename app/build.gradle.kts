@@ -67,5 +67,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation(project(":android-initialize"))
+    //implementation(project(":android-initialize"))
+    implementation("com.github.dingxiansen1:AndroidInitialize:v1.0.0")
 }

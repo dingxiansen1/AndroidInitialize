@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("maven-publish")
 }
-
 android {
     namespace = "com.dd.androidinitialize"
     compileSdk = 34
@@ -51,7 +50,7 @@ afterEvaluate {
                 from(components["release"])
 
                 // 然后，你可以如下方式自定义发布的属性
-                groupId = "com.dingdi.initialize"
+                groupId = "com.github.android-initialize"
                 artifactId = "dd"
                 version = "1.0.0"
             }
