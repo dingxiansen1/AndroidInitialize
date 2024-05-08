@@ -68,5 +68,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //implementation(project(":android-initialize"))
-    implementation("com.github.dingxiansen1:AndroidInitialize:v1.0.0")
+    implementation("com.github.AndroidInitialize:dd:1.0.0")
 }

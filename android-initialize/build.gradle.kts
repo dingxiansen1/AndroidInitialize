@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("maven-publish")
+    id("com.vanniktech.maven.publish")
 }
 android {
     namespace = "com.dd.androidinitialize"
@@ -51,8 +51,8 @@ afterEvaluate {
 
                 // 然后，你可以如下方式自定义发布的属性
                 groupId = "com.github.android-initialize"
-                artifactId = "dd"
-                version = "1.0.0"
+                artifactId = "android-initialize"
+                version = "1.0.1"
             }
         }
     }
